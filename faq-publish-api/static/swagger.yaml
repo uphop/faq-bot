@@ -1,0 +1,256 @@
+openapi: 3.0.0
+info:
+  description: API for publishing topics (questions / answers) for FAQ assistant.
+  version: 1.0.0
+  title: Publish API
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+servers:
+  - url: /
+tags:
+  - name: Topic
+    description: CRUD API for managing a list of user's topics.
+  - name: User
+    description: CRUD API for managing a list of users.
+paths:
+  '/user/{user_id}/topic':
+    get:
+      tags:
+        - Topic
+      summary: Returns topics
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the topic's author
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topics'
+    post:
+      tags:
+        - Topic
+      summary: Create a new topic
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the topic's author
+          schema:
+            type: string
+      requestBody:
+        description: Topic POST object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/topicPostBody'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_id'
+        '400':
+          description: Failed. Bad post data.
+  '/user/{user_id}/topic/{topic_id}':
+    get:
+      tags:
+        - Topic
+      summary: Get topic with given identifier
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the topic's author
+          schema:
+            type: string
+        - name: topic_id
+          in: path
+          required: true
+          description: ID of the topic that we want to match
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic'
+        '400':
+          description: Failed. Misunderstood Request.
+        '404':
+          description: Failed. Topic not found.
+    delete:
+      summary: Delete topic by identifier
+      tags:
+        - Topic
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the topic's author
+          schema:
+            type: string
+        - name: topic_id
+          in: path
+          required: true
+          description: ID of the topic that we want to match
+          schema:
+            type: string
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topic_id'
+        '400':
+          description: Failed. Misunderstood Request.
+        '404':
+          description: Failed. Topic not found.
+  /user:
+    get:
+      tags:
+        - User
+      summary: Returns users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users'
+    post:
+      tags:
+        - User
+      summary: Create a new user
+      requestBody:
+        description: User POST object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userPostBody'
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_id'
+        '400':
+          description: Failed. Bad post data.
+  '/user/{user_id}':
+    get:
+      tags:
+        - User
+      summary: Get user with given identifier
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the topic's author
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '400':
+          description: Failed. Misunderstood Request.
+        '404':
+          description: Failed. User not found.
+    delete:
+      summary: Delete user by identifier
+      tags:
+        - User
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: ID of the topic's author
+          schema:
+            type: string
+      responses:
+        '204':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user_id'
+        '400':
+          description: Failed. Misunderstood Request.
+        '404':
+          description: Failed. User not found.
+components:
+  schemas:
+    topic_id:
+      properties:
+        uuid:
+          type: string
+    topicPostBody:
+      type: object
+      properties:
+        question:
+          type: string
+          format: string
+        answer:
+          type: string
+          format: email
+    topic:
+      type: object
+      properties:
+        question:
+          type: string
+          format: string
+        answer:
+          type: string
+          format: email
+        created:
+          type: string
+          format: number
+    topics:
+      type: object
+      properties:
+        topic:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/topic'
+    user_id:
+      properties:
+        uuid:
+          type: string
+    userPostBody:
+      type: object
+      properties:
+        name:
+          type: string
+          format: string
+    user:
+      type: object
+      properties:
+        name:
+          type: string
+          format: string
+        created:
+          type: string
+          format: number
+    users:
+      type: object
+      properties:
+        user:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/user'

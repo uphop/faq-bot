@@ -1,0 +1,267 @@
+version: "2.0"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - out_of_scope
+  - add_topic
+  - add_topic_repeat_confirmed
+  - add_topic_repeat_denied
+  - get_topics
+  - delete_topics
+  - add_snapshot
+  - external_notify_snapshot_published
+  - ask_question
+
+entities:
+  - broadcast_name
+  - mentioned_slack_user
+
+slots:
+  question:
+    type: any
+    influence_conversation: false
+  answer:
+    type: any
+    influence_conversation: false
+  user_id:
+    type: any
+    influence_conversation: false
+  user_display_name:
+    type: any
+    influence_conversation: false
+  user_real_name:
+    type: any
+    influence_conversation: false
+  broadcast_name:
+    type: any
+    influence_conversation: false
+
+forms:
+  form_add_topic:
+    question:
+      - type: from_text
+    answer:
+      - type: from_text
+
+actions:
+  - action_check_user
+  - action_add_topic
+  - validate_form_add_topic
+  - action_get_topics
+  - action_delete_topics
+  - action_add_snapshot
+  - action_notify_snapshot_published
+  - action_ask_question
+
+responses:
+  utter_greet:
+  - text: "Hey! How can I help? :wave:"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "Show my current topics."
+      payload: "/get_topics"
+    - title: "Drop all current topics."
+      payload: "/delete_topics"
+    - title: "Publish all current topics."
+      payload: "/add_snapshot"
+    - title: "What can you do?"
+      payload: "/bot_challenge"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on! :heart_eyes_cat:"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa. \nI can handle a list of typical questions asked by other people - and provide them with answers (hopefully), so you could focus on important stuff :muscle:"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "All good, just checking-in."
+      payload: "/mood_great"
+
+  utter_ask_question:
+  - text: "What question should I expect?"
+  - text: "What will I be asked?"
+  - text: "Ok, what about should I be asked?"
+
+  utter_ask_answer:
+  - text: "What answer should I provide?"
+  - text: "And what will I be responding?"
+  - text: "Ok, and what should I tell about that?"
+
+  utter_add_topic_confirmation:
+  - text: "Topic added, {user_display_name} :kissing_cat:"
+  - text: "Awesome, {user_display_name}, that will be shared with others."
+  
+  utter_please_rephrase:
+  - text: I'm sorry, I didn't quite understand that. Could you rephrase?
+  
+  utter_default:
+  - text: Sorry I didn't get that. Can you rephrase?
+
+  utter_check_user_failed:
+  - text: "Seems like I cannot get your profile at this moment :scream_cat:... Please hand-over to human for help!"
+
+  utter_propose_repeat_capture:
+  - text: Would you like to add anything else?
+    buttons:
+    - title: "Yes, one more, please."
+      payload: "/add_topic_repeat_confirmed"
+    - title: "All good for now."
+      payload: "/add_topic_repeat_denied"
+
+  utter_affirm_repeat_capture:
+  - text: Fine, let's add one more item.
+
+  utter_deny_repeat_capture:
+  - text: That's fine, leaving as it is.
+
+  utter_get_topics:
+  - text: "Here are your current topics :smirk_cat:"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "Delete current topics."
+      payload: "/delete_topics"
+    - title: "Publish all current topics."
+      payload: "/add_snapshot"
+  - text: "See below your topics :smirk_cat:"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "Delete current topics."
+      payload: "/delete_topics"
+    - title: "Publish all current topics."
+      payload: "/add_snapshot"
+  - text: "Your current topics are :smirk_cat:"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "Delete current topics."
+      payload: "/delete_topics"
+    - title: "Publish all current topics."
+      payload: "/add_snapshot"
+
+  utter_get_topics_empty:
+  - text: "Seems like there are no current topics. Do you want to add one?"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "What else can you do?"
+      payload: "/bot_challenge"
+    - title: "May be next time."
+      payload: "/mood_great"
+  - text: "You don't have any topics yet, {user_display_name}. Add one now?"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "What else can you do?"
+      payload: "/bot_challenge"
+    - title: "May be next time."
+      payload: "/mood_great"
+  
+  utter_add_topic_failed:
+  - text: "Seems like I cannot add new topic for you :scream_cat:... Please hand-over to human for help!"
+  
+  utter_get_topics_failed:
+  - text: "Seems like I cannot get your topics currently :scream_cat:... Please hand-over to human for help!"
+
+  utter_delete_topics_check:
+  - text: "Are you sure you want to drop all topics?"
+    buttons:
+    - title: "Yes, please."
+      payload: "/affirm"
+    - title: "Not yet."
+      payload: "/deny"
+  - text: "Delete all current topics?"
+    buttons:
+    - title: "Yes, please."
+      payload: "/affirm"
+    - title: "Not yet."
+      payload: "/deny"
+
+  utter_delete_topics_confirmation:
+  - text: "Topics dropped, {user_display_name} :crying_cat_face:"
+  - text: "Ok, {user_display_name}, all topics are dropped :crying_cat_face:"
+
+  utter_delete_topics_empty:
+  - text: "Seems like there are no current topics. Do you want to add one?"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "What else can you do?"
+      payload: "/bot_challenge"
+    - title: "May be next time."
+      payload: "/mood_great"
+  - text: "You don't have any topics yet, {user_display_name}. Add one now?"
+    buttons:
+    - title: "Let's add new topic."
+      payload: "/add_topic"
+    - title: "What else can you do?"
+      payload: "/bot_challenge"
+    - title: "May be next time."
+      payload: "/mood_great"
+
+  utter_delete_topics_failed:
+  - text: "Seems like I cannot delete your topics currently :scream_cat:... Please hand-over to human for help!"
+
+  utter_add_snapshot_check:
+  - text: "Are you sure you want to publish all topics?"
+    buttons:
+    - title: "Yes, please."
+      payload: "/affirm"
+    - title: "Not yet."
+      payload: "/deny"
+  - text: "Broadcast all current topics?"
+    buttons:
+    - title: "Yes, please."
+      payload: "/affirm"
+    - title: "Not yet."
+      payload: "/deny"
+
+  utter_add_snapshot_confirmation:
+  - text: "Topics will be published shortly, {user_display_name} :heart_eyes_cat: I'll let you know when I'm done."
+  - text: "Ok, {user_display_name}, all topics will be published shortly :heart_eyes_cat: I'll ping you back when done."
+
+  utter_add_snapshot_failed:
+  - text: "Seems like I cannot publish your topics currently :scream_cat:... Please hand-over to human for help!"
+
+  utter_out_of_scope:
+  - text: "Sorry, I can't handle that request :scream_cat:"
+
+  utter_snapshot_published_confirmation:
+  - text: "Hey, just to let you know, {user_display_name} - topics are now published :rocket: Your personal bot {broadcast_name} is now responding to questions instead of you."
+  - text: "Hey hey, {user_display_name}, topics published :rocket: Bot {broadcast_name} is now responding to boring questions on your behalf."
+  - text: "{user_display_name}, a quick update - all topics are now published and visible to your peers :rocket: Bot {broadcast_name} is now responding to boring questions on your behalf."
+
+  utter_get_snapshots_failed:
+  - text: "Seems like this user does not have any topics published yet... :crying_cat_face:"
+
+  utter_ask_question_empty:
+  - text: "Seems like you have not asked any specific question... :crying_cat_face:"
+
+  utter_get_answer:
+  - text: "<@{originator_sender_id}> says - {originator_answer}"
+
+  utter_get_answer_failed:
+  - text: "Seems like this user's bot is not responding... :crying_cat_face:"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

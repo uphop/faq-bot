@@ -1,0 +1,78 @@
+version: "3"
+services:
+  db:
+    image: postgres:latest
+    container_name: faq-postgres
+    ports:
+      - 5432:5432
+    networks:
+      - default
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      - POSTGRES_DB=faq-db
+      - POSTGRES_USER=faq
+      - POSTGRES_PASSWORD=rise2Shine!
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: faq-rabbitmq
+    ports:
+      - 5672:5672
+    networks:
+      - default
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_data:/var/log/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest!
+
+  publish-api:
+    image: uphop/faq-publish-api
+    container_name: faq-publish-api
+    build: 
+      context: ./faq-publish-api
+      dockerfile: publish-api.Dockerfile
+    networks:
+      - default
+    depends_on: 
+      - db
+
+  publish-broker:
+    image: uphop/faq-publish-broker
+    container_name: faq-publish-broker
+    build: 
+      context: ./faq-publish-api
+      dockerfile: publish-broker.Dockerfile
+    networks:
+      - default
+    depends_on: 
+      - rabbitmq
+
+  capture-actions:
+    image: uphop/faq-capture-actions
+    container_name: faq-capture-actions
+    build: 
+      context: ./faq-capture-bot
+      dockerfile: capture-actions.Dockerfile
+    networks:
+      - default
+  
+  capture-bot:
+    image: uphop/faq-capture-bot
+    container_name: faq-capture-bot
+    build: 
+      context: ./faq-capture-bot
+      dockerfile: capture-bot.Dockerfile
+    networks:
+      - default
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
+
+networks:
+  default:
+    driver: bridge

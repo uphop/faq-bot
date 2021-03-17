@@ -1,0 +1,149 @@
+version: "2.0"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - good afternoon
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+
+- intent: out_of_scope
+  examples: |
+    - I want to order food
+    - What is 2 + 2?
+    - Who's the US President?
+
+- intent: add_topic
+  examples: |
+    - add new topic
+    - add topic
+    - push topic
+    - set topic
+    - keep in mind
+    - remember that
+    - tell others
+
+- intent: get_topics
+  examples: |
+    - show topics
+    - get my current topics
+    - get topics
+    - retrieve topics
+    - show already added topics
+    - current topics
+    - show me what we have
+
+- intent: delete_topics
+  examples: |
+    - delete topics
+    - delete my current topics
+    - drop topics
+    - clean-up topics
+    - remove already added topics
+    - remove current topics
+    - drop what we have
+
+- intent: add_snapshot
+  examples: |
+    - publish topics
+    - publish my current topics
+    - make topics public
+    - broadcast topics
+    - publish already added topics
+    - publish current topics
+    - publish what we have
+
+- regex: mentioned_slack_user
+  examples: |
+    - [a-zA-Z0-9]{9}
+
+- intent: ask_question
+  examples: |
+    - ask [UE4T4HS8J](mentioned_slack_user)
+    - ask [UE4T4HS8J](mentioned_slack_user) a question
+    - check [UE4T4HS8J](mentioned_slack_user)
+    - ping [UE4T4HS8J](mentioned_slack_user)
