@@ -80,6 +80,7 @@ services:
 volumes:
   postgres_data:
   rabbitmq_data:
+  rasa_data:
 
 networks:
   default:

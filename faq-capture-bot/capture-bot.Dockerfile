@@ -8,7 +8,7 @@ WORKDIR /faq-capture-bot
 USER root
 
 # Install packages from PyPI
-COPY requirements.txt requirements.txt
+COPY capture-bot-requirements.txt requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Switch back to non-root to run code

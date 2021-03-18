@@ -30,7 +30,9 @@ class ModelTransform:
             "--verbose",
             "--debug",
             "--fixed-model-name",
-            model_file_prefix
+            model_file_prefix,
+            "--num-threads",
+            "2"
         ]
 
         # create a subprocess for rasa train command, setting current working directory to the broadcast's directory

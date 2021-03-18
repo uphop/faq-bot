@@ -12,10 +12,13 @@ Updates Rasa NLU examples with synonims.
 class SynonimTransform:
     def __init__(self):
         # nltk init
-        nltk.download('stopwords')
-        nltk.download('punkt')
-        nltk.download('averaged_perceptron_tagger')
-        nltk.download('wordnet')
+        NLTK_DATA_FOLDER = os.getenv('NLTK_DATA_FOLDER', './nltk_data')
+        nltk.download('stopwords', download_dir=NLTK_DATA_FOLDER)
+        nltk.download('punkt', download_dir=NLTK_DATA_FOLDER)
+        nltk.download('averaged_perceptron_tagger', download_dir=NLTK_DATA_FOLDER)
+        nltk.download('wordnet', download_dir=NLTK_DATA_FOLDER)
+        nltk.data.path.append(NLTK_DATA_FOLDER)
+
         self.supported_tags = ['JJ', 'JJR', 'JJS', 'MD', 'NN', 'NNS', 'NNP', 'NNPS', 'RB', 'RBR', 'RBS', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']
 
     """
@@ -42,7 +45,8 @@ class SynonimTransform:
         
         # make list unique, and drop the original question, if there is such
         question_variations = list(set(question_variations))
-        question_variations.remove(question)
+        if question in question_variations:
+            question_variations.remove(question)
 
         return question_variations
 

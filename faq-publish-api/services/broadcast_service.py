@@ -1,15 +1,15 @@
 import os
 import sys
+from shutil import copyfile, copytree, rmtree
 import requests
 import json
-
 import logging
 import uuid
-import names
+from coolname import generate_slug
+
 import ruamel
 import ruamel.yaml
 from ruamel.yaml.scalarstring import PreservedScalarString as pss
-from shutil import copyfile, copytree, rmtree
 
 sys.path.append('./')
 from transforms.bot_transform import BotTransform
@@ -38,6 +38,10 @@ class BroadcastService:
     def publish_snapshot(self, snapshot):
         logger.info('Publishing started.')
 
+        # create broadcast identity
+        broadcast_id = str(uuid.uuid4())
+        broadcast_name = generate_slug()
+
         # clone bot
         bot_output_folder = BotTransform(snapshot['id']).transform()
 
@@ -57,14 +61,15 @@ class BroadcastService:
         BotTransform(snapshot['id']).cleanup()
 
         # update snapshot
-        # self.notify_master()
+        self.notify_master(snapshot['id'], snapshot['user_id'], broadcast_id, broadcast_name)
         
 
-    def notify_master(self):
+    def notify_master(self, id, user_id, broadcast_id, broadcast_name):
         # prepare request
-        request_url = f"{self.PUBLISH_API_BASE_URL}/user/{self.snapshot['user_id']}/snapshot/{self.snapshot['id']}"
+        request_url = f"{self.PUBLISH_API_BASE_URL}/user/{user_id}/snapshot/{id}"
         payload = {
-            'broadcast_name': self.broadcast_name
+            'broadcast_id': broadcast_id,
+            'broadcast_name': broadcast_name
         }
 
         # call publish API
