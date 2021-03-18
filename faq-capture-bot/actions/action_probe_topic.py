@@ -12,13 +12,13 @@ logger = logging.getLogger(__name__)
 """
 Action for get answer to FAQ topic.
 """
-class ActionAskQuestion(Action):
+class ActionProbeTopic(Action):
     def __init__(self):
         self.publish_api_client = PublishApiClient()
         self.rasa_api_client = RasaApiClient()
 
     def name(self) -> Text:
-        return "action_ask_question"
+        return "action_probe_topic"
         
     def run(
         self,

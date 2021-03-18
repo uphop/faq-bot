@@ -16,7 +16,7 @@ intents:
   - delete_topics
   - add_snapshot
   - external_notify_snapshot_published
-  - ask_question
+  - probe_topic
 
 entities:
   - broadcast_name
@@ -57,7 +57,7 @@ actions:
   - action_delete_topics
   - action_add_snapshot
   - action_notify_snapshot_published
-  - action_ask_question
+  - action_probe_topic
 
 responses:
   utter_greet:
@@ -253,7 +253,7 @@ responses:
   utter_get_snapshots_failed:
   - text: "Seems like this user does not have any topics published yet... :crying_cat_face:"
 
-  utter_ask_question_empty:
+  utter_probe_topic_empty:
   - text: "Seems like you have not asked any specific question... :crying_cat_face:"
 
   utter_get_answer:

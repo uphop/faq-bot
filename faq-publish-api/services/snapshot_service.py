@@ -78,9 +78,10 @@ class SnapshotService:
         # retrieve all snapshots from data store, convert to list and return
         response = []
         results = self.data_store.get_snapshots(user_id)
-        for user_id, id, created, published, broadcast_name, in results:
-            snapshot = self.get_snapshot_by_id(user_id, id)
-            response.append(snapshot)
+        if not results is None:
+            for user_id, id, created, published, broadcast_name, in results:
+                snapshot = self.get_snapshot_by_id(user_id, id)
+                response.append(snapshot)
         return response
 
     def get_published_snapshot(self, user_id):
@@ -94,10 +95,11 @@ class SnapshotService:
 
         # retrieve all snapshots from data store, convert to list and return
         results = self.data_store.get_snapshots(user_id)
-        for user_id, id, created, published, broadcast_name, in results:
-            if not published is None and not broadcast_name is None:
-                snapshot = self.get_snapshot_by_id(user_id, id)
-                return snapshot
+        if not results is None:
+            for user_id, id, created, published, broadcast_name, in results:
+                if not published is None and not broadcast_name is None:
+                    snapshot = self.get_snapshot_by_id(user_id, id)
+                    return snapshot
 
     def get_snapshot_by_id(self, user_id, id):
         """Get snapshot by identifier.

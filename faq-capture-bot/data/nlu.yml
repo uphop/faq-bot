@@ -141,7 +141,7 @@ nlu:
   examples: |
     - [a-zA-Z0-9]{9}
 
-- intent: ask_question
+- intent: probe_topic
   examples: |
     - ask [UE4T4HS8J](mentioned_slack_user)
     - ask [UE4T4HS8J](mentioned_slack_user) a question

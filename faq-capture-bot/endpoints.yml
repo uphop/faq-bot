@@ -11,11 +11,19 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 action_endpoint:
-  url: "http://localhost:5055/webhook"
+  url: "http://faq-capture-actions:5055/webhook"
 
 # Tracker store which is used to store the conversations.
 # By default the conversations are stored in memory.
 # https://rasa.com/docs/rasa/tracker-stores
+
+tracker_store:
+    type: SQL
+    dialect: "postgresql"  # the dialect used to interact with the db
+    url: "db"  # (optional) host of the sql db, e.g. "localhost"
+    db: "faq-db"  # path to your db
+    username: "faq"  # username used for authentication
+    password: "rise2Shine!" # password used for authentication
 
 #tracker_store:
 #    type: redis

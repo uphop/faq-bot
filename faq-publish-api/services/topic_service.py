@@ -8,6 +8,8 @@ logger = logging.getLogger(__name__)
 '''
 Manages topic entity.
 '''
+
+
 class TopicService:
     def __init__(self):
         # init data store
@@ -30,7 +32,7 @@ class TopicService:
         if question is None or len(question) == 0:
             logger.error('Question is not passed.')
             return
-        
+
         # check if answer passed
         if answer is None or len(answer) == 0:
             logger.error('Answer is not passed.')
@@ -44,8 +46,10 @@ class TopicService:
 
         # generate new topic identifier and add to data store
         id = str(uuid.uuid4())
-        self.data_store.create_topic(user_id, id, question, answer, datetime.now().timestamp())
-        logger.debug('Created new topic ' + str(id) + ' for user ' + str(user_id))
+        self.data_store.create_topic(
+            user_id, id, question, answer, datetime.now().timestamp())
+        logger.debug('Created new topic ' + str(id) +
+                     ' for user ' + str(user_id))
         return id
 
     def get_topics(self, user_id):
@@ -59,7 +63,7 @@ class TopicService:
 
         # retrieve all topics from data store, convert to list and return
         results = self.data_store.get_topics(user_id)
-        return [self.map_topic(user_id, id, question, answer, created) for user_id, id, question, answer, created, in results]
+        return [self.map_topic(user_id, id, question, answer, created) for user_id, id, question, answer, created, in results] if not results is None else []
 
     def get_topic_by_id(self, user_id, id):
         """Get user by identifier.
@@ -101,7 +105,8 @@ class TopicService:
         if not result is None:
             # delete topic from data store by ID
             self.data_store.delete_topic(user_id, id)
-            logger.debug('Deleted topic ' + str(id) + ' for user ' + str(user_id))
+            logger.debug('Deleted topic ' + str(id) +
+                         ' for user ' + str(user_id))
             return id
 
     def map_topic(self, user_id, id, question, answer, created):

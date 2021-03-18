@@ -87,5 +87,5 @@ stories:
   
 - story: ask question happy path
   steps:
-  - intent: ask_question
-  - action: action_ask_question
+  - intent: probe_topic
+  - action: action_probe_topic

@@ -79,7 +79,7 @@ class UserService:
 
         # retrieve user from data store by full name
         results = self.data_store.get_user_by_name(name)
-        return [self.map_user(id, name, created, sender_id) for id, name, created, sender_id, in results]
+        return [self.map_user(id, name, created, sender_id) for id, name, created, sender_id, in results] if not results is None else []
 
     def get_user_by_sender_id(self, sender_id):
         """Get user by sender ID.

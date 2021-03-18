@@ -3,10 +3,10 @@ services:
   db:
     image: postgres:latest
     container_name: faq-postgres
-    ports:
-      - 5432:5432
     networks:
       - default
+    ports:
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
@@ -18,10 +18,10 @@ services:
   rabbitmq:
     image: rabbitmq:latest
     container_name: faq-rabbitmq
-    ports:
-      - 5672:5672
     networks:
       - default
+    ports:
+      - 5672:5672
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq/
       - rabbitmq_data:/var/log/rabbitmq
@@ -32,42 +32,50 @@ services:
   publish-api:
     image: uphop/faq-publish-api
     container_name: faq-publish-api
+    networks:
+      - default
+    ports:
+      - 5000:5000
     build: 
       context: ./faq-publish-api
       dockerfile: publish-api.Dockerfile
-    networks:
-      - default
     depends_on: 
       - db
 
   publish-broker:
     image: uphop/faq-publish-broker
     container_name: faq-publish-broker
+    networks:
+      - default
     build: 
       context: ./faq-publish-api
       dockerfile: publish-broker.Dockerfile
-    networks:
-      - default
     depends_on: 
       - rabbitmq
 
   capture-actions:
     image: uphop/faq-capture-actions
     container_name: faq-capture-actions
+    networks:
+      - default
+    ports:
+      - 5055:5055
     build: 
       context: ./faq-capture-bot
       dockerfile: capture-actions.Dockerfile
-    networks:
-      - default
   
   capture-bot:
     image: uphop/faq-capture-bot
     container_name: faq-capture-bot
+    networks:
+      - default
+    ports:
+      - 5005:5005
     build: 
       context: ./faq-capture-bot
       dockerfile: capture-bot.Dockerfile
-    networks:
-      - default
+    depends_on: 
+      - db
 
 volumes:
   postgres_data:

@@ -16,6 +16,4 @@ USER 1001
 
 COPY . .
 
-EXPOSE 5672 5672
-
 CMD [ "celery", "-A", "broker", "worker", "-Q", "publish_queue", "--loglevel=INFO"]

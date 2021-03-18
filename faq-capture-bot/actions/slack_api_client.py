@@ -26,15 +26,3 @@ class SlackApiClient:
         except SlackApiError as e:
             logger.error("Error fetching user details: {}".format(e))
 
-    def notify_user(self, channel, text):
-        '''
-        Sends text message to Slack channel.
-        '''
-        try:
-            response = self.slack_client.chat_postMessage(
-                channel=channel,
-                text=text
-            )
-
-        except SlackApiError as e:
-            logger.error("Error posting message: {}".format(e))
