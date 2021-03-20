@@ -8,13 +8,13 @@ logger = logging.getLogger(__name__)
 Wrapper for Rasa HTTP API. 
 """
 class RasaApiClient:
-    def __init__(self):
+    def __init__(self, base_url):
         # load configuration
-        self.RASA_API_BASE_URL = os.getenv('RASA_API_BASE_URL', 'http://localhost:5006')
+        self.base_url = base_url
 
     def post_message(self, message, sender):
         # prepare request
-        request_url = f"{self.RASA_API_BASE_URL}/webhooks/rest/webhook"
+        request_url = f"{self.base_url}/webhooks/rest/webhook"
         payload = {
             'message': message,
             'sender': sender,

@@ -5,3 +5,4 @@ rasa==2.3.4
 requests==2.25.0
 ruamel.yaml==0.16.12
 python-dotenv==0.15.0
+docker==4.4.4

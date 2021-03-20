@@ -47,6 +47,9 @@ services:
     container_name: faq-publish-broker
     networks:
       - default
+    volumes: 
+      # https://github.com/docker/for-mac/issues/4755
+      - /var/run/docker.sock.raw:/var/run/docker.sock
     build: 
       context: ./faq-publish-api
       dockerfile: publish-broker.Dockerfile
@@ -80,7 +83,6 @@ services:
 volumes:
   postgres_data:
   rabbitmq_data:
-  rasa_data:
 
 networks:
   default:

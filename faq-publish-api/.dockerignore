@@ -6,6 +6,7 @@ README.md
 LICENSE
 .vscode
 output
+nltk_data
 tests
 venv
 .sample_env

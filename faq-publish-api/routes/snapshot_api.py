@@ -97,11 +97,17 @@ def update_snapshot(_user_id, _snapshot_id):
         abort(400)
     data = request.get_json(force=True)
 
+    if not data.get('broadcast_id'):
+        abort(400)
+        
     if not data.get('broadcast_name'):
         abort(400)
 
+    if not data.get('broadcast_url'):
+        abort(400)
+
     # Store broadcast details
-    id = snapshot_service.update_snapshot(_user_id, _snapshot_id, data['broadcast_name'])
+    id = snapshot_service.update_snapshot(_user_id, _snapshot_id, data['broadcast_id'], data['broadcast_name'], data['broadcast_url'])
     if not id:
         # HTTP 409 Conflict
         abort(404)

@@ -61,7 +61,11 @@ class SnapshotService:
         snapshot = self.get_snapshot_by_id(user_id, id)
 
          # send snapshot details to worker, to publish a new broacast bot
-        self.broadcast_queue.submit_snapshot(snapshot)
+        snapshot_submission = {
+             'snapshot': snapshot,
+             'target_spot': user['spot_id']
+        }
+        self.broadcast_queue.submit_snapshot(snapshot_submission)
         logger.debug('Snapshot submitted for broadcasting ' + str(id) + ' for user ' + str(user_id))
 
         return id
@@ -79,7 +83,7 @@ class SnapshotService:
         response = []
         results = self.data_store.get_snapshots(user_id)
         if not results is None:
-            for user_id, id, created, published, broadcast_name, in results:
+            for user_id, id, created, published, broadcast_id, broadcast_name, broadcast_url, in results:
                 snapshot = self.get_snapshot_by_id(user_id, id)
                 response.append(snapshot)
         return response
@@ -96,8 +100,8 @@ class SnapshotService:
         # retrieve all snapshots from data store, convert to list and return
         results = self.data_store.get_snapshots(user_id)
         if not results is None:
-            for user_id, id, created, published, broadcast_name, in results:
-                if not published is None and not broadcast_name is None:
+            for user_id, id, created, published, broadcast_id, broadcast_name, broadcast_url, in results:
+                if not published is None and not broadcast_name and not broadcast_url is None:
                     snapshot = self.get_snapshot_by_id(user_id, id)
                     return snapshot
 
@@ -120,7 +124,7 @@ class SnapshotService:
         snapshot = self.data_store.get_snapshot_by_id(user_id, id)
         if not snapshot is None:
             response = self.map_snapshot(
-                snapshot.user_id, snapshot.id, snapshot.created, snapshot.published, snapshot.broadcast_name)
+                snapshot.user_id, snapshot.id, snapshot.created, snapshot.published, snapshot.broadcast_id, snapshot.broadcast_name, snapshot.broadcast_url)
 
             snapshot_topics = self.data_store.get_snapshot_topics_by_id(
                 user_id, id)
@@ -155,7 +159,7 @@ class SnapshotService:
                      ' for user ' + str(user_id))
         return id
 
-    def update_snapshot(self, user_id, id, broadcast_name):
+    def update_snapshot(self, user_id, id, broadcast_id, broadcast_name, broadcast_url):
         """Update snapshot by identifier.
         @param: user_id: author's identifier
         @param id: snapshot's ID
@@ -171,8 +175,18 @@ class SnapshotService:
             logger.error('Snapshot ID is not passed.')
             return
 
+        # check if broadcast ID passed
+        if broadcast_id is None or len(broadcast_id) == 0:
+            logger.error('Broadcast ID is not passed.')
+            return
+
         # check if broadcast name passed
         if broadcast_name is None or len(broadcast_name) == 0:
+            logger.error('Broadcast name is not passed.')
+            return
+
+        # check if broadcast URL passed
+        if broadcast_url is None or len(broadcast_url) == 0:
             logger.error('Broadcast name is not passed.')
             return
 
@@ -183,7 +197,7 @@ class SnapshotService:
             return
 
         # update snapshot in data store by ID
-        self.data_store.update_snapshot(user_id, id, datetime.now().timestamp(), broadcast_name)
+        self.data_store.update_snapshot(user_id, id, datetime.now().timestamp(), broadcast_id, broadcast_name, broadcast_url)
         logger.debug('Updated snapshot ' + str(id) +
                      ' for user ' + str(user_id))
 
@@ -193,7 +207,7 @@ class SnapshotService:
         return id
 
 
-    def map_snapshot(self, user_id, id, created, published, broadcast_name):
+    def map_snapshot(self, user_id, id, created, published, broadcast_id, broadcast_name, broadcast_url):
         """Maps data store row to dict.
         """
         response = {
@@ -205,8 +219,14 @@ class SnapshotService:
         if published is not None:
             response['published'] = published
         
+        if broadcast_id is not None:
+            response['broadcast_id'] = broadcast_id
+
         if broadcast_name is not None:
             response['broadcast_name'] = broadcast_name
+
+        if broadcast_url is not None:
+            response['broadcast_url'] = broadcast_url
 
         return response
 

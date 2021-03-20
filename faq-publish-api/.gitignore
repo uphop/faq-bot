@@ -134,5 +134,7 @@ dmypy.json
 
 # Rasa training results
 /output
-
+/nltk_data
 .DS_Store
+
+

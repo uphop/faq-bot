@@ -6,19 +6,16 @@ import json
 import logging
 import uuid
 from coolname import generate_slug
-
 import ruamel
 import ruamel.yaml
 from ruamel.yaml.scalarstring import PreservedScalarString as pss
-
 sys.path.append('./')
 from transforms.bot_transform import BotTransform
 from transforms.synonim_transform import SynonimTransform
 from transforms.nlu_transform import NLUTransform
 from transforms.domain_transform import DomainTransform
 from transforms.model_transform import ModelTransform
-from transforms.hotswap_transform import HotSwapTransform
-
+from transforms.runtime_transform import RuntimeTransform
 
 logger = logging.getLogger(__name__)
 
@@ -35,41 +32,47 @@ class BroadcastService:
     Main processing chain of broadcast bot publishing.
     Prepares NLU / domain based on captured FAQs, and trains a replica of broadcast with that training data.
     """
-    def publish_snapshot(self, snapshot):
-        logger.info('Publishing started.')
+    def publish_snapshot(self, snapshot_submission):
+        logger.debug('Publishing started.')
+
+        snapshot = snapshot_submission['snapshot']
+        snapshot_id = snapshot['id']
+        user_id = snapshot['user_id']
+        snapshot_topics = snapshot['topics']
+        target_spot = snapshot_submission['target_spot']
 
         # create broadcast identity
         broadcast_id = str(uuid.uuid4())
         broadcast_name = generate_slug()
-
+        
         # clone bot
-        bot_output_folder = BotTransform(snapshot['id']).transform()
+        bot_output_folder = BotTransform(snapshot_id).transform()
 
         # run topics through transformers
-        items = SynonimTransform().transform(snapshot['topics'])
+        items = SynonimTransform().transform(snapshot_topics)
         nlu_output_file = NLUTransform(bot_output_folder).transform(items)
         domain_output_file = DomainTransform(bot_output_folder).transform(items)
 
         # train cloned bot
-        model_output_file = ModelTransform(bot_output_folder).transform(snapshot['id'])
-
-        # copy model file to output root
-        model_output_file = HotSwapTransform(bot_output_folder).transform(model_output_file)
-        print(model_output_file)
+        model_output_file = ModelTransform(bot_output_folder).transform(snapshot_id)
+        
+        # prepare bot runtime
+        broadcast_url = RuntimeTransform(bot_output_folder).transform(snapshot_id, target_spot)
 
         # clean-up
-        BotTransform(snapshot['id']).cleanup()
+        BotTransform(snapshot_id).cleanup()
 
         # update snapshot
-        self.notify_master(snapshot['id'], snapshot['user_id'], broadcast_id, broadcast_name)
-        
+        self.notify_master(snapshot_id, user_id, broadcast_id, broadcast_name, broadcast_url)
 
-    def notify_master(self, id, user_id, broadcast_id, broadcast_name):
+   
+    def notify_master(self, id, user_id, broadcast_id, broadcast_name, broadcast_url):
         # prepare request
         request_url = f"{self.PUBLISH_API_BASE_URL}/user/{user_id}/snapshot/{id}"
         payload = {
             'broadcast_id': broadcast_id,
-            'broadcast_name': broadcast_name
+            'broadcast_name': broadcast_name,
+            'broadcast_url': broadcast_url
         }
 
         # call publish API
@@ -110,8 +113,13 @@ if __name__ == '__main__':
         "user_id": "6d49c900-bca0-4fe8-bc02-bfc90635a5ed"
     }
 
+    snapshot_submission = {
+        'snapshot': snapshot,
+        'target_spot': 123
+    }
+
     from dotenv import load_dotenv
     load_dotenv()
 
     svc = BroadcastService()
-    svc.publish_snapshot(snapshot)
+    svc.publish_snapshot(snapshot_submission)

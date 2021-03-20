@@ -32,7 +32,7 @@ class ModelTransform:
             "--fixed-model-name",
             model_file_prefix,
             "--num-threads",
-            "2"
+            "4"
         ]
 
         # create a subprocess for rasa train command, setting current working directory to the broadcast's directory
@@ -56,4 +56,6 @@ class ModelTransform:
                 break
 
         model_output_file = model_file_prefix + '.tar.gz'
+        logger.debug('Trained broadcast bot model file: ' + model_output_file)
+        
         return model_output_file

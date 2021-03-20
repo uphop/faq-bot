@@ -52,7 +52,7 @@ class UserService:
         """
         # retrieve all users from data store, convert to list and return
         results = self.data_store.get_users()
-        return [self.map_user(id, name, created, sender_id) for id, name, created, sender_id, in results]
+        return [self.map_user(id, name, created, sender_id, spot_id) for id, name, created, sender_id, spot_id, in results]
 
     def get_user_by_id(self, id):
         """Get user by identifier.
@@ -66,7 +66,7 @@ class UserService:
         # retrieve user from data store by ID; if user not found, return None
         result = self.data_store.get_user_by_id(id)
         if not result is None:
-            return self.map_user(result.id, result.name, result.created, result.sender_id)
+            return self.map_user(result.id, result.name, result.created, result.sender_id, result.spot_id)
 
     def get_user_by_name(self, name):
         """Get user by name.
@@ -79,7 +79,7 @@ class UserService:
 
         # retrieve user from data store by full name
         results = self.data_store.get_user_by_name(name)
-        return [self.map_user(id, name, created, sender_id) for id, name, created, sender_id, in results] if not results is None else []
+        return [self.map_user(id, name, created, sender_id, spot_id) for id, name, created, sender_id, spot_id, in results] if not results is None else []
 
     def get_user_by_sender_id(self, sender_id):
         """Get user by sender ID.
@@ -93,7 +93,7 @@ class UserService:
         # retrieve user from data store by ID; if user not found, return None
         result = self.data_store.get_user_by_sender_id(sender_id)
         if not result is None:
-            return self.map_user(result.id, result.name, result.created, result.sender_id)
+            return self.map_user(result.id, result.name, result.created, result.sender_id, result.spot_id)
 
     def delete_user(self, id):
         """Delete user by identifier.
@@ -157,7 +157,7 @@ class UserService:
         if response.status_code == 200:
             return
 
-    def map_user(self, id, name, created, sender_id):
+    def map_user(self, id, name, created, sender_id, spot_id):
         """Maps data store row to dict.
         """
-        return {'id': id, 'name': name, 'created': created, 'sender_id': sender_id}
+        return {'id': id, 'name': name, 'created': created, 'sender_id': sender_id, 'spot_id': spot_id}

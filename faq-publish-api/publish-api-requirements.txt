@@ -9,3 +9,4 @@ python-dotenv==0.15.0
 coolname==1.1.0
 nltk==3.5
 ruamel.yaml==0.16.12
+docker==4.4.4

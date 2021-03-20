@@ -15,7 +15,6 @@ Action for get answer to FAQ topic.
 class ActionProbeTopic(Action):
     def __init__(self):
         self.publish_api_client = PublishApiClient()
-        self.rasa_api_client = RasaApiClient()
 
     def name(self) -> Text:
         return "action_probe_topic"
@@ -54,9 +53,11 @@ class ActionProbeTopic(Action):
             dispatcher.utter_message(template='utter_get_snapshots_failed')
             return []
 
+        # route question to the target bot
+        rasa_api_client = RasaApiClient(snapshot['broadcast_url'])
+
         # ask snapshot a question
-        # TODO: route question to the target bot
-        bot_response = self.rasa_api_client.post_message(message=question, sender=tracker.sender_id)
+        bot_response = rasa_api_client.post_message(message=question, sender=tracker.sender_id)
         if bot_response is None or len(bot_response) == 0:
             dispatcher.utter_message(template='utter_get_answer_failed')
             return []

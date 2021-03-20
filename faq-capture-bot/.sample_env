@@ -1,8 +1,0 @@
-[PUBLISH]
-PUBLISH_API_BASE_URL=http://localhost:5000
-
-[SLACK]
-SLACK_BOT_TOKEN=
-
-[RASA]
-RASA_API_BASE_URL=http://localhost:5006

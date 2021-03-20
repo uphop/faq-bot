@@ -15,10 +15,10 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 USER 1001
 
 COPY endpoints.yml endpoints.yml
-COPY credentials.yml credentials.yml
+# TODO: replace credentials!!!
+COPY credentials_local.yml credentials.yml
 COPY ./models ./models
 
 EXPOSE 5005 5005
 
-# TODO: replace credentials!!!
 CMD [ "run", "--endpoints" , "endpoints.yml", "--verbose", "--port", "5005", "--enable-api", "--credentials", "credentials.yml"]
