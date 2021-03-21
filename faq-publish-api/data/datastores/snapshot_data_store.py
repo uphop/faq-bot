@@ -33,8 +33,8 @@ class SnapshotDataStore:
     def delete_snapshot(self, user_id, id):
         # delete record from data store and commit
         session = SessionHelper().get_session()
-        session.query(Snapshot).filter(Snapshot.user_id == user_id, Snapshot.id == id).delete()
         session.query(SnapshotTopic).filter(SnapshotTopic.snapshot_id == id).delete()
+        session.query(Snapshot).filter(Snapshot.user_id == user_id, Snapshot.id == id).delete()
         session.commit()
     
     def update_snapshot(self, user_id, id, published, broadcast_id, broadcast_name, broadcast_url):

@@ -19,7 +19,7 @@ class BotTransform:
         bot_root_output_folder = self.delete_bot_output_folder(self.output_folder_prefix)
         bot_root_output_folder = self.prepare_bot_output_folder(self.output_folder_prefix)
         bot_output_folder = self.clone_bot_from_template(bot_root_output_folder)
-        logger.debug('Bot replica ready.')
+        logger.debug('Bot replica ready at: ' + bot_output_folder)
         return bot_output_folder
 
     def prepare_bot_output_folder(self, output_folder_prefix):

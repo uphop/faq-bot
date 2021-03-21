@@ -30,17 +30,11 @@ class ModelTransform:
             "--verbose",
             "--debug",
             "--fixed-model-name",
-            model_file_prefix,
-            "--num-threads",
-            "4"
+            model_file_prefix
         ]
 
         # create a subprocess for rasa train command, setting current working directory to the broadcast's directory
-        process = subprocess.Popen(model_train_command,
-                                   cwd=output_folder,
-                                   stdout=subprocess.PIPE,
-                                   universal_newlines=True
-                                   )
+        process = subprocess.Popen(model_train_command, cwd=output_folder, stdout=subprocess.PIPE, universal_newlines=True)
 
         # run broadcast bot training
         while True:
@@ -52,10 +46,8 @@ class ModelTransform:
                 # Process has finished, read rest of the output
                 for output in process.stdout.readlines():
                     logger.info(output.strip())
-                    logger.info('Broadcast bot training completed.')
+                logger.info('Broadcast bot training completed, response code: ' + str(return_code))
                 break
 
         model_output_file = model_file_prefix + '.tar.gz'
-        logger.debug('Trained broadcast bot model file: ' + model_output_file)
-        
         return model_output_file

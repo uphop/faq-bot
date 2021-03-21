@@ -57,7 +57,7 @@ class BroadcastService:
         model_output_file = ModelTransform(bot_output_folder).transform(snapshot_id)
         
         # prepare bot runtime
-        broadcast_url = RuntimeTransform(bot_output_folder).transform(snapshot_id, target_spot)
+        broadcast_url = RuntimeTransform(bot_output_folder).transform(user_id, target_spot, broadcast_name)
 
         # clean-up
         BotTransform(snapshot_id).cleanup()
@@ -90,7 +90,7 @@ class BroadcastService:
 # Default handler
 if __name__ == '__main__':
     snapshot = {
-        "broadcast_name": "Norma Williams",
+        "broadcast_name": "norma_williams",
         "created": "1615630111.54651",
         "id": "369f10c1-db94-442e-a5f6-b279b0858acc",
         "published": "1615630176.59936",
@@ -107,6 +107,13 @@ if __name__ == '__main__':
                 "created": "1615630100.83781",
                 "question": "Who should I kiss tonight?",
                 "topic_id": "85a7a15b-69da-470d-ae14-1f032b025e4c",
+                "user_id": "6d49c900-bca0-4fe8-bc02-bfc90635a5ed"
+            },
+            {
+                "answer": "+37065641046",
+                "created": "1615630100.83781",
+                "question": "What is your phone number?",
+                "topic_id": "85a7a15b-69da-470d-ae14-1f032b025e4d",
                 "user_id": "6d49c900-bca0-4fe8-bc02-bfc90635a5ed"
             }
         ],

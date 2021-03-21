@@ -23,6 +23,7 @@ class TopicDataStore:
     def delete_topic(self, user_id, id):
         # delete record from data store and commit
         session = SessionHelper().get_session()
+        session.query(SnapshotTopic).filter(SnapshotTopic.topic_id == id).delete()
         session.query(Topic).filter(Topic.user_id == user_id, Topic.id == id).delete()
         session.commit()
 

@@ -101,7 +101,7 @@ class SnapshotService:
         results = self.data_store.get_snapshots(user_id)
         if not results is None:
             for user_id, id, created, published, broadcast_id, broadcast_name, broadcast_url, in results:
-                if not published is None and not broadcast_name and not broadcast_url is None:
+                if not published is None and not broadcast_name is None and not broadcast_url is None:
                     snapshot = self.get_snapshot_by_id(user_id, id)
                     return snapshot
 
