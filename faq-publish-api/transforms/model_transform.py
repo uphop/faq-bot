@@ -26,8 +26,6 @@ class ModelTransform:
         model_train_command = [
             "rasa",
             "train",
-            "--force",
-            "--verbose",
             "--debug",
             "--fixed-model-name",
             model_file_prefix

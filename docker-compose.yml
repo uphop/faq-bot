@@ -45,12 +45,14 @@ services:
   publish-broker:
     image: uphop/faq-publish-broker
     container_name: faq-publish-broker
-    mem_limit: 2000000000
-    memswap_limit: 2000000000
     networks:
       - default
     volumes: 
-      # https://github.com/docker/for-mac/issues/4755
+      # Please note Docker for Mac requires the following
+      # - /var/run/docker.sock.raw:/var/run/docker.sock'
+      # However, on other Linux (e.g. AWS EC2 Ubuntu) change to:
+      # - /var/run/docker.sock:/var/run/docker.sock'
+      # See for details: https://github.com/docker/for-mac/issues/4755
       - /var/run/docker.sock.raw:/var/run/docker.sock
     build: 
       context: ./faq-publish-api

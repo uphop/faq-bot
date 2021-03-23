@@ -2,43 +2,21 @@ version: "2.0"
 
 intents:
   - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
   - faq
 
 responses:
   utter_greet:
   - text: "Hey! How are you?"
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
-
-  utter_goodbye:
-  - text: "Bye"
-
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
-
-  utter_out_of_scope:
-  - text: "Sorry, I can't handle that request..."
-
-  utter_please_rephrase:
-  - text: I'm sorry, I didn't quite understand that. Could you rephrase?
-
   utter_default:
   - text: Sorry I didn't get that. Can you rephrase?
 
+  utter_faq/what_can_you_do:
+  - text: I can answer boring questions on behalf of my master.
+
+  utter_faq/bot_challenge:
+  - text: I am a bot, powered by Rasa.
+
 session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  session_expiration_time: 1
+  carry_over_slots_to_new_session: false
