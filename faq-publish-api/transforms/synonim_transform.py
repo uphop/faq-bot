@@ -48,6 +48,10 @@ class SynonimTransform:
         if question in question_variations:
             question_variations.remove(question)
 
+        # slice question variations to limit those
+        MAX_SYNONIMS = int(os.getenv('MAX_SYNONIMS', '5'))
+        question_variations = question_variations[:MAX_SYNONIMS]
+
         return question_variations
 
     def generate_question_variations(self, question, word_variations):

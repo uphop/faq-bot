@@ -3,12 +3,13 @@
 language: en
 
 pipeline:
-  - name: WhitespaceTokenizer
+  - name: SpacyNLP
+  - name: SpacyTokenizer
+  - name: SpacyFeaturizer
   - name: RegexFeaturizer
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
-  - name: CountVectorsFeaturizer
-    analyzer: char_wb
+    analyzer: "char_wb"
     min_ngram: 1
     max_ngram: 4
   - name: DIETClassifier
@@ -21,11 +22,11 @@ pipeline:
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/
 policies:
-  - name: MemoizationPolicy
-  - name: TEDPolicy
-    max_history: 1
-    epochs: 100
-    constrain_similarities: true
+  # - name: MemoizationPolicy
+  # - name: TEDPolicy
+  #  max_history: 1
+  #  epochs: 100
+  #  constrain_similarities: true
   - name: RulePolicy
     # Confidence threshold for the `core_fallback_action_name` to apply.
     # The action will apply if no other action was predicted with

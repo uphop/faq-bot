@@ -35,6 +35,8 @@ BROADCAST_BOT_OUTPUT_FOLDER=bot
 BROADCAST_OUTPUT_NLU_FILE=data/nlu.yml
 # Name of Rasa domain output file
 BROADCAST_OUTPUT_DOMAIN_FILE=domain.yml
+# Limit to synonims
+BROADCAST_OUTPUT_MAX_SYNONIMS=5
 # Path to model folder
 BROADCAST_OUTPUT_MODEL_FOLDER=models
 
