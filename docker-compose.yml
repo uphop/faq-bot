@@ -59,6 +59,14 @@ services:
       dockerfile: publish-broker.Dockerfile
     depends_on: 
       - rabbitmq
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
 
   capture-actions:
     image: uphop/faq-capture-actions

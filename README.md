@@ -23,9 +23,13 @@ passwd ubuntu
 sudo groupadd docker
 sudo usermod -aG docker $USER
 
+GPU set-up:
+https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#post-installation-actions
+https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html#ubuntu-lts
+
 Start: 
 docker-compose up -d
 ./ngrok start --config ngrok.yml rasa
 
 Stop: 
-docker-compose down --volumes --remove-orphans
+docker-compose down --volumes --remove-orphans --rmi all
