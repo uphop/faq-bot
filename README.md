@@ -46,15 +46,10 @@ And now, elt's try to talk to that published bot (actually, any user in the same
 Please note the question you are asking should not be the same as the original one - Concierge bot generates multiple training examples based on the original question using synonims. So, otehr users can ask a similar (but not exactly the same) question, and get back the response you want them to hear.
 
 And here is a short video demo of the end-to-end use case - adding initial topics, talking to the generated bot, then adding one more topic, retraining and talking to the bot again:
+
 [![Recorded_sample](http://img.youtube.com/vi/D9Y3L39LNjY/0.jpg)](https://www.youtube.com/watch?v=D9Y3L39LNjY "FAQ bot demo")
 
 ### Implementation
-
-The project consists of the following modules:
-* Concierge bot (Capture) in `faq-capture-bot`: this is a master bot which collects FAQs and publishes those to `faq-publish-api`. The bot is implemented with [Rasa Open Source](https://rasa.com/docs/rasa/).
-* Concierge bot's action server in `faq-capture-actions`: this is an add-on service supporting Concierge bot with custom logic. Action server is using Pubslish API to pass FAQs for publishing. Also, Aciton server dynamically calls published Broadcast bots via Rasa REST API. The server is implemented with [Rasa Action Server](https://rasa.com/docs/action-server).
-* Publish API in `faq-publish-api`: this is a RESTful API to manage users and their FAQs. API is implemented with Flask, SQLAlchemy and Postgres. Also, that talks to Publish Broker via RabbitMQ queue to send pubslih tasks.
-* Publish Broker in `faq-publish-broker`: this is a Celery worker, which generates new Rasa bots with to servce FAQs, and runs those as dedicated Docker containers. Broker is implemented with [Celery](https://docs.celeryproject.org/en/stable/getting-started/introduction.html).
 
 Core tech stack:
 * Python 3
@@ -65,6 +60,12 @@ Core tech stack:
 * NLTK
 * Docker and Docker Compose
 * AWS EC2
+
+The project consists of the following modules:
+* Concierge bot (Capture) in `faq-capture-bot`: this is a master bot which collects FAQs and publishes those to `faq-publish-api`. The bot is implemented with [Rasa Open Source](https://rasa.com/docs/rasa/).
+* Concierge bot's action server in `faq-capture-actions`: this is an add-on service supporting Concierge bot with custom logic. Action server is using Pubslish API to pass FAQs for publishing. Also, Aciton server dynamically calls published Broadcast bots via Rasa REST API. The server is implemented with [Rasa Action Server](https://rasa.com/docs/action-server).
+* Publish API in `faq-publish-api`: this is a RESTful API to manage users and their FAQs. API is implemented with Flask, SQLAlchemy and Postgres. Also, that talks to Publish Broker via RabbitMQ queue to send pubslih tasks.
+* Publish Broker in `faq-publish-broker`: this is a Celery worker, which generates new Rasa bots with to servce FAQs, and runs those as dedicated Docker containers. Broker is implemented with [Celery](https://docs.celeryproject.org/en/stable/getting-started/introduction.html).
 
 ## Setting-up
 
