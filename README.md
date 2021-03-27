@@ -44,7 +44,7 @@ There are three main interaction scenarios:
 
 3) Broadcasting published FAQs to requesters (to users who are asking the originator those recurring questions)
 
-![Component model-Broadcasting](https://user-images.githubusercontent.com/74451637/112728326-56f40680-8f2f-11eb-9bff-042c11c9fc2b.jpg)
+![Component model-Broadcasting (1)](https://user-images.githubusercontent.com/74451637/112728481-28c2f680-8f30-11eb-8031-1a7cedd1de93.jpg)
 
 ### Usage and demo
 
