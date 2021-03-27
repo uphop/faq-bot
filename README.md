@@ -1,7 +1,34 @@
-# faq-bot
+# FAQ assistant with Rasa
 
 ## About
-<TBD>
+
+### Purpose
+
+This project is a Slack-based assistant, which miitgates [Slacktique](https://www.reddit.com/r/Slack/comments/ho5uq7/slacktigue_what_are_your_tips_and_tricks/) by acting as your personal proxy between people asking you recurring, similar questions over Slack, and yourself. 
+
+The primary use case is the following:
+* Capture some specific knowledge from the individual what individual's peers most probably will be asking multiple times, and the individual would like to share once with all (e.g. status of your specific tasks, details of your current progress, your vacation plans, etc.)
+* Publish those details as a personalized bot, which is proxying all FAQ requests, and allow anyone to pull those details asynchronously 
+* You can feed-in new details at any time, a new bot is retrained in background, and updated details are published to your peers in a couple of minutes
+
+There are two bot types:
+* A concierge bot (Capture) is launched for all users, collects frequently asked questions / answers (FAQs) from each user, and then dynamically generates training data, trains and launches a dedicated bot for that user to serve those FAQs
+* A dedicated bot (Broadcast) is launched per each user, and serves published FAQs to other people, who are talking to the bot instead of you
+
+### Usage and demo
+
+Open a Slack direct message channel with the bot app: Apps > Add apps > (find your bot app and select that)
+
+Say "Hi" :) the bot should respond with the following:
+![Screenshot 2021-03-27 at 12 52 56](https://user-images.githubusercontent.com/74451637/112718407-6c4f3d80-8efb-11eb-98ac-98f62599ceeb.png)
+
+### Implementation
+
+The project consists of the following modules:
+* Concierge bot (Capture) in `faq-capture-bot`: this is a master bot which collects FAQs and publishes those to `faq-publish-api`. The bot is implemented with [Rasa Open Source](https://rasa.com/docs/rasa/).
+* Concierge bot's action server in `faq-capture-actions`: this is an add-on service supporting Concierge bot with custom logic. Action server is using Pubslish API to pass FAQs for publishing. Also, Aciton server dynamically calls published Broadcast bots via Rasa REST API. The server is implemented with [Rasa Action Server](https://rasa.com/docs/action-server).
+* Publish API in `faq-publish-api`: this is a RESTful API to manage users and their FAQs. API is implemented with Flask, SQLAlchemy and Postgres. Also, that talks to Publish Broker via RabbitMQ queue to send pubslih tasks.
+* Publish Broker in `faq-publish-broker`: this is a Celery worker, which generates new Rasa bots with to servce FAQs, and runs those as dedicated Docker containers. Broker is implemented with [Celery](https://docs.celeryproject.org/en/stable/getting-started/introduction.html).
 
 ## Setting-up
 
