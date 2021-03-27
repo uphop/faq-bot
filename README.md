@@ -36,7 +36,7 @@ The project consists of the following modules:
 There are three main interaction scenarios:
 1) Adding new FAQs by the originator (user who wants to share responses to recurring questions)
 
-![Component model-Adding topics](https://user-images.githubusercontent.com/74451637/112728189-c74e5800-8f2e-11eb-8a4c-daffbb43aea5.jpg)
+![Component model-Adding topics (1)](https://user-images.githubusercontent.com/74451637/112728374-a76b6400-8f2f-11eb-928e-0cedfe01b6fa.jpg)
 
 2) Publishing collected FAQs by the originator:
 
