@@ -1,6 +1,0 @@
-[PUBLISH]
-PUBLISH_API_BASE_URL=http://faq-publish-api:5000
-
-[SLACK]
-SLACK_BOT_TOKEN=
-
