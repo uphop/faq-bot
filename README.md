@@ -1,4 +1,4 @@
-# FAQ assistant with Rasa
+# Dynamically trained Slack FAQ assistant with Rasa, NLTK and Docker
 
 ## About
 
@@ -56,6 +56,16 @@ The project consists of the following modules:
 * Concierge bot's action server in `faq-capture-actions`: this is an add-on service supporting Concierge bot with custom logic. Action server is using Pubslish API to pass FAQs for publishing. Also, Aciton server dynamically calls published Broadcast bots via Rasa REST API. The server is implemented with [Rasa Action Server](https://rasa.com/docs/action-server).
 * Publish API in `faq-publish-api`: this is a RESTful API to manage users and their FAQs. API is implemented with Flask, SQLAlchemy and Postgres. Also, that talks to Publish Broker via RabbitMQ queue to send pubslih tasks.
 * Publish Broker in `faq-publish-broker`: this is a Celery worker, which generates new Rasa bots with to servce FAQs, and runs those as dedicated Docker containers. Broker is implemented with [Celery](https://docs.celeryproject.org/en/stable/getting-started/introduction.html).
+
+Core tech stack:
+* Python 3
+* Flask 
+* SQLAlchemy with Postgres
+* Celery with RabbitMQ
+* Rasa (Core and Action Server)
+* NLTK
+* Docker and Docker Compose
+* AWS EC2
 
 ## Setting-up
 
