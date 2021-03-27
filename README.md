@@ -15,6 +15,37 @@ There are two bot types:
 * A concierge bot (Capture) is launched for all users, collects frequently asked questions / answers (FAQs) from each user, and then dynamically generates training data, trains and launches a dedicated bot for that user to serve those FAQs
 * A dedicated bot (Broadcast) is launched per each user, and serves published FAQs to other people, who are talking to the bot instead of you
 
+### Implementation
+
+Core tech stack:
+* Python 3
+* Flask 
+* SQLAlchemy with Postgres
+* Celery with RabbitMQ
+* Rasa (Core and Action Server)
+* NLTK
+* Docker and Docker Compose
+* AWS EC2
+
+The project consists of the following modules:
+* Concierge bot (Capture) in `faq-capture-bot`: this is a master bot which collects FAQs and publishes those to `faq-publish-api`. The bot is implemented with [Rasa Open Source](https://rasa.com/docs/rasa/).
+* Concierge bot's action server in `faq-capture-actions`: this is an add-on service supporting Concierge bot with custom logic. Action server is using Pubslish API to pass FAQs for publishing. Also, Aciton server dynamically calls published Broadcast bots via Rasa REST API. The server is implemented with [Rasa Action Server](https://rasa.com/docs/action-server).
+* Publish API in `faq-publish-api`: this is a RESTful API to manage users and their FAQs. API is implemented with Flask, SQLAlchemy and Postgres. Also, that talks to Publish Broker via RabbitMQ queue to send pubslih tasks.
+* Publish Broker in `faq-publish-broker`: this is a Celery worker, which generates new Rasa bots with to servce FAQs, and runs those as dedicated Docker containers. Broker is implemented with [Celery](https://docs.celeryproject.org/en/stable/getting-started/introduction.html).
+
+There are three main interaction scenarios:
+1) Adding new FAQs by the originator (user who wants to share responses to recurring questions)
+
+![Component model-Adding topics](https://user-images.githubusercontent.com/74451637/112728189-c74e5800-8f2e-11eb-8a4c-daffbb43aea5.jpg)
+
+2) Publishing collected FAQs by the originator:
+
+![Component model-Publishing](https://user-images.githubusercontent.com/74451637/112728320-4cd20800-8f2f-11eb-8d00-33e8102a3b4b.jpg)
+
+3) Broadcasting published FAQs to requesters (to users who are asking the originator those recurring questions)
+
+![Component model-Broadcasting](https://user-images.githubusercontent.com/74451637/112728326-56f40680-8f2f-11eb-9bff-042c11c9fc2b.jpg)
+
 ### Usage and demo
 
 Open a Slack direct message channel with the bot app: Apps > Add apps > (find your bot app and select that)
@@ -48,24 +79,6 @@ Please note the question you are asking should not be the same as the original o
 And here is a short video demo of the end-to-end use case - adding initial topics, talking to the generated bot, then adding one more topic, retraining and talking to the bot again:
 
 [![Recorded_sample](http://img.youtube.com/vi/D9Y3L39LNjY/0.jpg)](https://www.youtube.com/watch?v=D9Y3L39LNjY "FAQ bot demo")
-
-### Implementation
-
-Core tech stack:
-* Python 3
-* Flask 
-* SQLAlchemy with Postgres
-* Celery with RabbitMQ
-* Rasa (Core and Action Server)
-* NLTK
-* Docker and Docker Compose
-* AWS EC2
-
-The project consists of the following modules:
-* Concierge bot (Capture) in `faq-capture-bot`: this is a master bot which collects FAQs and publishes those to `faq-publish-api`. The bot is implemented with [Rasa Open Source](https://rasa.com/docs/rasa/).
-* Concierge bot's action server in `faq-capture-actions`: this is an add-on service supporting Concierge bot with custom logic. Action server is using Pubslish API to pass FAQs for publishing. Also, Aciton server dynamically calls published Broadcast bots via Rasa REST API. The server is implemented with [Rasa Action Server](https://rasa.com/docs/action-server).
-* Publish API in `faq-publish-api`: this is a RESTful API to manage users and their FAQs. API is implemented with Flask, SQLAlchemy and Postgres. Also, that talks to Publish Broker via RabbitMQ queue to send pubslih tasks.
-* Publish Broker in `faq-publish-broker`: this is a Celery worker, which generates new Rasa bots with to servce FAQs, and runs those as dedicated Docker containers. Broker is implemented with [Celery](https://docs.celeryproject.org/en/stable/getting-started/introduction.html).
 
 ## Setting-up
 
