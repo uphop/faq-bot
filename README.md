@@ -105,19 +105,18 @@ To start, launch Docker Compose build:
 docker-compose up -d
 ```
 
-The concierge bot is exposing by default port 5005 - try pinging that:
-```
-curl -X GET "http://localhost:5005"
-```
-, and you should get `Hello from Rasa` message.
-
 Also, if you are running on a local machine, you need to start a public channel: 
 ```
 ./ngrok start --config ngrok.yml rasa
 ```
 
 After several seconds all containers should be started, and Capture Bot should be listening on the channel exposed to Slack.
-Try that out now, by openning Slack workspace where you have configured the bot app, and saying "Hi" :)
+The concierge bot is exposing by default port 5005 - try pinging that, and you should get `Hello from Rasa` message.
+```
+curl -X GET "http://localhost:5005"
+```
+
+Try now talking to the bot, by openning Slack workspace where you have configured the bot app, and saying "Hi" :)
 
 ### Stop
 To stop, ask Docker Compose to ramp own all launched containers: 
