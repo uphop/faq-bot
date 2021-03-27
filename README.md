@@ -43,7 +43,7 @@ Also, if you are running on a local machine, you need to start a public channel:
 `./ngrok start --config ngrok.yml rasa`
 
 After several seconds all containers should be started, and Capture Bot should be listening on the channel exposed to Slack.
-Try that out now, by openning Slack workspace where you have configured the bot app, and sayind "Hi" :)
+Try that out now, by openning Slack workspace where you have configured the bot app, and saying "Hi" :)
 
 ### Stop
 To stop, ask Docker Compose to ramp own all launched containers:
@@ -60,6 +60,29 @@ You can leverage GPU support to train new FAQ bots much quicker. For that:
 * Set-up Nvidia drivers as per [this guide](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html#introduction)
 * Set-up CUDA Tookit as per [this guide](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#introduction)
 * Uncomment GPU configuration in `docker-compose.yml`, service `publish-broker`
+
+```
+  publish-broker:
+    image: uphop/faq-publish-broker
+    container_name: faq-publish-broker
+    networks:
+      - default
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock
+    build: 
+      context: ./faq-publish-broker
+    depends_on: 
+      - rabbitmq
+    # Uncomment enviornment and deploy sections below to leverage GPU support
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
+```
 
 ### Deploy to AWS
 
