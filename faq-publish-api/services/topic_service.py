@@ -2,6 +2,8 @@ import uuid
 from datetime import datetime, timedelta
 from data.datastores.topic_data_store import TopicDataStore
 from services.user_service import UserService
+from dotenv import load_dotenv
+load_dotenv()
 import logging
 logger = logging.getLogger(__name__)
 

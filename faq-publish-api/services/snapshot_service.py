@@ -3,8 +3,9 @@ from datetime import datetime, timedelta
 from data.datastores.snapshot_data_store import SnapshotDataStore
 from services.user_service import UserService
 from services.topic_service import TopicService
-from queues.broadcast_queue import BroadcastQueue
-
+from queues.broadcast_queue_client import BroadcastQueueClient
+from dotenv import load_dotenv
+load_dotenv()
 import logging
 logger = logging.getLogger(__name__)
 
@@ -18,7 +19,7 @@ class SnapshotService:
         # init other services
         self.user_service = UserService()
         self.topic_service = TopicService()
-        self.broadcast_queue = BroadcastQueue()
+        self.broadcast_queue_client = BroadcastQueueClient()
 
     def create_snapshot(self, user_id):
         """Creates a new snapshot.
@@ -65,7 +66,7 @@ class SnapshotService:
              'snapshot': snapshot,
              'target_spot': user['spot_id']
         }
-        self.broadcast_queue.submit_snapshot(snapshot_submission)
+        self.broadcast_queue_client.submit_snapshot(snapshot_submission)
         logger.debug('Snapshot submitted for broadcasting ' + str(id) + ' for user ' + str(user_id))
 
         return id

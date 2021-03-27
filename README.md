@@ -14,15 +14,17 @@ https://www.twilio.com/blog/deploy-flask-python-app-aws
 Install Docker:
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
 
+Change permissions and add user to acess host daemon:
 sudo chmod 666 /var/run/docker.sock
+sudo groupadd docker
+sudo usermod -aG docker $USER
 
 change pwd:
 sudo su -
 passwd ubuntu
 
-sudo groupadd docker
-sudo usermod -aG docker $USER
 
+Set-up Nvidia drivers
 GPU set-up:
 https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#post-installation-actions
 https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html#ubuntu-lts

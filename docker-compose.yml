@@ -38,7 +38,6 @@ services:
       - 5000:5000
     build: 
       context: ./faq-publish-api
-      dockerfile: publish-api.Dockerfile
     depends_on: 
       - db
 
@@ -55,18 +54,18 @@ services:
       # See for details: https://github.com/docker/for-mac/issues/4755
       - /var/run/docker.sock.raw:/var/run/docker.sock
     build: 
-      context: ./faq-publish-api
-      dockerfile: publish-broker.Dockerfile
+      context: ./faq-publish-broker
     depends_on: 
       - rabbitmq
-    environment:
-      NVIDIA_VISIBLE_DEVICES: all
-      NVIDIA_DRIVER_CAPABILITIES: all
-    deploy:
-      resources:
-        reservations:
-          devices:
-          - capabilities: [gpu]
+    # Uncomment enviornment and deploy sections below to leverage GPU support
+    # environment:
+    #   NVIDIA_VISIBLE_DEVICES: all
+    #   NVIDIA_DRIVER_CAPABILITIES: all
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    # ß      - capabilities: [gpu]
 
   capture-actions:
     image: uphop/faq-capture-actions
@@ -76,8 +75,8 @@ services:
     ports:
       - 5055:5055
     build: 
-      context: ./faq-capture-bot
-      dockerfile: capture-actions.Dockerfile
+      context: ./faq-capture-actions
+
   
   capture-bot:
     image: uphop/faq-capture-bot
@@ -88,7 +87,6 @@ services:
       - 5005:5005
     build: 
       context: ./faq-capture-bot
-      dockerfile: capture-bot.Dockerfile
     depends_on: 
       - db
 

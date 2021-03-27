@@ -3,6 +3,8 @@ import uuid
 from datetime import datetime, timedelta
 import requests
 from data.datastores.user_data_store import UserDataStore
+from dotenv import load_dotenv
+load_dotenv()
 import logging
 logger = logging.getLogger(__name__)
 

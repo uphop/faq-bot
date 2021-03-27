@@ -1,0 +1,42 @@
+[API]
+PUBLISH_API_BASE_URL=http://faq-publish-api:5000
+
+[DATA]
+NLTK_DATA_FOLDER=./nltk_data
+
+[QUEUES]
+CELERY_BROKER=pyamqp://guest:guest!@faq-rabbitmq//
+CELERY_QUEUE=publish_queue
+
+[TEMPLATES]
+# Path to template folder
+BROADCAST_TEMPLATE_FOLDER=./templates
+# Path to Broadcast bot template folder
+BROADCAST_BOT_TEMPLATE_FOLDER=bot
+# Name of Rasa NLU template file
+BROADCAST_TEMPLATE_NLU_FILE=nlu.yml
+# Name of Rasa domain template file
+BROADCAST_TEMPLATE_DOMAIN_FILE=domain.yml
+
+[OUTPUT]
+# Path to output folder
+BROADCAST_OUTPUT_FOLDER=./output
+# Path to Broadcast bot output folder
+BROADCAST_BOT_OUTPUT_FOLDER=bot
+# Name of Rasa NLU output file
+BROADCAST_OUTPUT_NLU_FILE=data/nlu.yml
+# Name of Rasa domain output file
+BROADCAST_OUTPUT_DOMAIN_FILE=domain.yml
+# Limit to synonims
+BROADCAST_OUTPUT_MAX_SYNONIMS=5
+# Path to model folder
+BROADCAST_OUTPUT_MODEL_FOLDER=models
+
+[RUNTIME]
+BROADCAST_RUNTIME
+BROADCAST_CONTAINER_PORT_RANGE_START=5010
+BROADCAST_CONTAINER_PORT_INTERNAL=5005
+BROADCAST_IMAGE_OWNER=unhop
+BROADCAST_DOCKER_HOST_BASE_URL=unix://var/run/docker.sock
+BROADCAST_CONTAINER_NETWORK_MODE=faq-bot_default
+BROADCAST_CONTAINER_MAX_START_ATTEMPTS=10

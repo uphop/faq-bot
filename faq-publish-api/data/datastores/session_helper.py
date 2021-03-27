@@ -3,6 +3,8 @@ import sqlalchemy as db
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from data.models.meta import Base
+from dotenv import load_dotenv
+load_dotenv()
 import logging
 logger = logging.getLogger(__name__)
 

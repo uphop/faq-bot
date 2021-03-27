@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # Trained Rasa models
-/models
+# /models
 
 # Local Rasa config
 credentials_local.yml

@@ -1,0 +1,15 @@
+[API]
+FLASK_APP_NAME=faq-publish-api
+FLASK_APP_HOST=faq-publish-api
+FLASK_APP_PORT=5000
+FLASK_APP_DEBUG=False
+
+[DATA]
+USER_TOPICS_DATASTORE_CONNECTION_STRING=postgresql+psycopg2://faq:rise2Shine!@faq-postgres/faq-db
+
+[QUEUES]
+CELERY_BROKER=pyamqp://guest:guest!@faq-rabbitmq//
+CELERY_QUEUE=publish_queue
+
+[BOT]
+CAPTURE_BOT_BASE_URL=http://faq-capture-bot:5005

@@ -1,9 +1,0 @@
-celery==5.0.5
-coolname==1.1.0
-nltk==3.5
-rasa==2.3.4
-spacy==2.2.4
-requests==2.25.0
-ruamel.yaml==0.16.12
-python-dotenv==0.15.0
-docker==4.4.4
