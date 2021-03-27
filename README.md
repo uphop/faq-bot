@@ -36,21 +36,29 @@ A sample ngrok configuration is provided in `ngrok.yml`.
 ## Starting-up
 
 ### Start
-To start, launch Docker Compose build:
-`docker-compose up -d`
+To start, launch Docker Compose build: 
+```
+docker-compose up -d
+```
 
-Also, if you are running on a local machine, you need to start a public channel:
-`./ngrok start --config ngrok.yml rasa`
+Also, if you are running on a local machine, you need to start a public channel: 
+```
+./ngrok start --config ngrok.yml rasa
+```
 
 After several seconds all containers should be started, and Capture Bot should be listening on the channel exposed to Slack.
 Try that out now, by openning Slack workspace where you have configured the bot app, and saying "Hi" :)
 
 ### Stop
-To stop, ask Docker Compose to ramp own all launched containers:
-`docker-compose down`
+To stop, ask Docker Compose to ramp own all launched containers: 
+```
+docker-compose down
+```
 
-And to fully clean-up, you can run the following:
-`docker-compose down --volumes --remove-orphans --rmi all`
+And to fully clean-up, you can run the following: 
+```
+docker-compose down --volumes --remove-orphans --rmi all
+```
 
 ## Additional configuration and deployment optons
 
@@ -60,20 +68,9 @@ You can leverage GPU support to train new FAQ bots much quicker. For that:
 * Set-up Nvidia drivers as per [this guide](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html#introduction)
 * Set-up CUDA Tookit as per [this guide](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#introduction)
 * Uncomment GPU configuration in `docker-compose.yml`, service `publish-broker`
-
 ```
   publish-broker:
-    image: uphop/faq-publish-broker
-    container_name: faq-publish-broker
-    networks:
-      - default
-    volumes: 
-      - /var/run/docker.sock:/var/run/docker.sock
-    build: 
-      context: ./faq-publish-broker
-    depends_on: 
-      - rabbitmq
-    # Uncomment enviornment and deploy sections below to leverage GPU support
+    ...
     environment:
       NVIDIA_VISIBLE_DEVICES: all
       NVIDIA_DRIVER_CAPABILITIES: all
@@ -82,6 +79,7 @@ You can leverage GPU support to train new FAQ bots much quicker. For that:
         reservations:
           devices:
           - capabilities: [gpu]
+    ...
 ```
 
 ### Deploy to AWS
@@ -102,20 +100,40 @@ You may need to increase memory limit to 4GB, and memory swap to 2GB to run loca
 ### Cannot access host Docker socket
 
 You may need to grant permissions to access Docker socket:
-`sudo chmod 666 /var/run/docker.sock`
+```
+sudo chmod 666 /var/run/docker.sock
+```
 
-Also, if you are running locally on Mac, you need to talk to `docker.sock.raw` instead of `docker.sock`. Please modify volume config in `docker-compose.yml`, service `publish-broker` as per comments in that section. For more details, check [this thread](https://github.com/docker/for-mac/issues/4755).
+Also, if you are running locally on Mac, you need to talk to `docker.sock.raw` instead of `docker.sock`. Please modify volume config in `docker-compose.yml`, service `publish-broker` as per comments in that section. 
+```
+ publish-broker:
+    ...
+    volumes: 
+      # Please note Docker for Mac requires the following
+      # - /var/run/docker.sock.raw:/var/run/docker.sock'
+      # However, on other Linux (e.g. AWS EC2 Ubuntu) change to:
+      # - /var/run/docker.sock:/var/run/docker.sock'
+      # See for details: https://github.com/docker/for-mac/issues/4755
+      - /var/run/docker.sock.raw:/var/run/docker.sock
+    ...
+```
+
+For more details, check [this thread](https://github.com/docker/for-mac/issues/4755).
 
 ### "Permission denied" while trying to access host Docker daemon
 
 You may need to add your user to the Docker group:
-`sudo groupadd docker`
-`sudo usermod -aG docker $USER`
+```
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
 
 Please see the [following thread](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket) for more details.
 
 Also, check whith which user you are running containers. You may need to run as root:
-`sudo docker-compose up -d`
+```
+sudo docker-compose up -d
+```
 
 
 
