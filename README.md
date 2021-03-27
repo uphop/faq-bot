@@ -105,6 +105,12 @@ To start, launch Docker Compose build:
 docker-compose up -d
 ```
 
+The concierge bot is exposing by default port 5005 - try pinging that:
+```
+curl -X GET "http://localhost:5005"
+```
+, and you should get `Hello from Rasa` message.
+
 Also, if you are running on a local machine, you need to start a public channel: 
 ```
 ./ngrok start --config ngrok.yml rasa
@@ -152,7 +158,8 @@ I have tried deploying this project to a single EC2 instance on AWS, on t2.xlarg
 The project is mostly compute-hungry, and a bit less memory-hungry (with the current configuration, each Rasa bot retraining takes up to 1-x cores, and ~1GB).
 Therefore, recommended minimum configuration is 4x vCPUs / 1x GPU (if available), and 8GB memory.
 
-You will need to also configure HTTPS support and reverse proxy in order to expose the Capture Bot to Slack. Please check [this](https://blog.cloudboost.io/setting-up-an-https-sever-with-node-amazon-ec2-nginx-and-lets-encrypt-46f869159469) and [this](https://jay315.medium.com/installing-ssl-tls-certificates-on-aws-ec2-with-ubuntu-and-nginx-configuration-eb156a55f7e7) amazing guides.
+You will need to also configure HTTPS support and reverse proxy in order to expose the Capture Bot to Slack. The default exposed port of concierge bot is 5005, you need to route inbound traffic via reverse proxy to that port.
+Please check [this](https://blog.cloudboost.io/setting-up-an-https-sever-with-node-amazon-ec2-nginx-and-lets-encrypt-46f869159469) and [this](https://jay315.medium.com/installing-ssl-tls-certificates-on-aws-ec2-with-ubuntu-and-nginx-configuration-eb156a55f7e7) amazing guides.
 
 ## Troubleshooting
 
