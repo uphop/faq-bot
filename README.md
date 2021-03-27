@@ -7,7 +7,7 @@
 
 ### Install pre-requisites
 
-The project is packaged as 4 custom-built Docker containers, plus Postgres and RabbitMQ. You need to the following to start-up:
+The project is packaged as 4 custom-built Docker containers, plus Postgres and RabbitMQ. You need the following to start-up:
 * [Docker runtime](https://docs.docker.com/engine/install/)
 * [Docker Compose](https://docs.docker.com/compose/install/)
 
@@ -24,62 +24,75 @@ Please init those by running `./init_config.sh`, which will copy sample configur
 
 ### Configure Slack integration
 
-Please configure Rasa<>Slack integration for Capture Bot as per [this guide](https://rasa.com/docs/rasa/connectors/slack/).
+Also, you will need to create a new bot app in Slack for Capture Bot, and to configure Rasa<>Slack integration as per [this guide](https://rasa.com/docs/rasa/connectors/slack/).
 
 You will need to update two config files:
 * In `faq-capture-bot/credentials.yml`, set values of `slack_token` to your Slack token, and `slack_signing_secret` to your Slack secret
 * In `faq-capture-actions/.env`, set value of `SLACK_BOT_TOKEN` to your Slack token
 
-### Environment
+If you are going to run on a local machine, you may need to open a channel visible to Slack, for example with [ngrok](https://ngrok.com/).
+A sample ngrok configuration is provided in `ngrok.yml`.
 
-### Running
+## Starting-up
 
-Start: 
-docker-compose up -d
-./ngrok start --config ngrok.yml rasa
+### Start
+To start, launch Docker Compose build:
+`docker-compose up -d`
 
-Stop: 
-docker-compose down --volumes --remove-orphans --rmi all
+Also, if you are running on a local machine, you need to start a public channel:
+`./ngrok start --config ngrok.yml rasa`
 
-### GPU support
-Set-up Nvidia drivers
-GPU set-up:
-https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#post-installation-actions
-https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html#ubuntu-lts
+After several seconds all containers should be started, and Capture Bot should be listening on the channel exposed to Slack.
+Try that out now, by openning Slack workspace where you have configured the bot app, and sayind "Hi" :)
 
-### Deploying to AWS
+### Stop
+To stop, ask Docker Compose to ramp own all launched containers:
+`docker-compose down`
 
+And to fully clean-up, you can run the following:
+`docker-compose down --volumes --remove-orphans --rmi all`
 
+## Additional configuration and deployment optons
 
+### Enable GPU support
 
+You can leverage GPU support to train new FAQ bots much quicker. For that:
+* Set-up Nvidia drivers as per [this guide](https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html#introduction)
+* Set-up CUDA Tookit as per [this guide](https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#introduction)
+* Uncomment GPU configuration in `docker-compose.yml`, service `publish-broker`
 
+### Deploy to AWS
 
+I have tried deploying this project to a single EC2 instance on AWS, on t2.xlarge (general purpose instance, without GPU) and g4.dn.xlarge (general purpose instance, with GPU). 
+The project is mostly compute-hungry, and a bit less memory-hungry (with the current configuration, each Rasa bot retraining takes up to 1-x cores, and ~1GB).
+Therefore, recommended minimum configuration is 4x vCPUs / 1x GPU (if available), and 8GB memory.
 
+You will need to also configure HTTPS support and reverse proxy in order to expose the Capture Bot to Slack. Please check [this](https://blog.cloudboost.io/setting-up-an-https-sever-with-node-amazon-ec2-nginx-and-lets-encrypt-46f869159469) and [this](https://jay315.medium.com/installing-ssl-tls-certificates-on-aws-ec2-with-ubuntu-and-nginx-configuration-eb156a55f7e7) amazing guides.
 
-Troubleshooting:
+## Troubleshooting
 
-Prep:
-change Docker for Mac settings, increase memory limit to 4GB, swap to 2GB
-Slack config
-.env config
+### "Killed" message while training Rasa bot on MacOS
 
-HTTPS:
-https://datahive.ai/deploying-rasa-chatbot-on-google-cloud-with-docker/
+If you are running on Mac, please note that Docker for Mac has rather low limits by default. Please refer to this [guide](https://docs.docker.com/docker-for-mac/) for details how to configure those.
+You may need to increase memory limit to 4GB, and memory swap to 2GB to run locally.
 
-AWS:
-https://www.twilio.com/blog/deploy-flask-python-app-aws 
+### Cannot access host Docker socket
 
-Install Docker:
-https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+You may need to grant permissions to access Docker socket:
+`sudo chmod 666 /var/run/docker.sock`
 
-Change permissions and add user to acess host daemon:
-sudo chmod 666 /var/run/docker.sock
-sudo groupadd docker
-sudo usermod -aG docker $USER
+Also, if you are running locally on Mac, you need to talk to `docker.sock.raw` instead of `docker.sock`. Please modify volume config in `docker-compose.yml`, service `publish-broker` as per comments in that section. For more details, check [this thread](https://github.com/docker/for-mac/issues/4755).
 
-change pwd:
-sudo su -
-passwd ubuntu
+### "Permission denied" while trying to access host Docker daemon
+
+You may need to add your user to the Docker group:
+`sudo groupadd docker`
+`sudo usermod -aG docker $USER`
+
+Please see the [following thread](https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket) for more details.
+
+Also, check whith which user you are running containers. You may need to run as root:
+`sudo docker-compose up -d`
 
 
 
