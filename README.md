@@ -46,7 +46,6 @@ And now, elt's try to talk to that published bot (actually, any user in the same
 Please note the question you are asking should not be the same as the original one - Concierge bot generates multiple training examples based on the original question using synonims. So, otehr users can ask a similar (but not exactly the same) question, and get back the response you want them to hear.
 
 And here is a short video demo of the end-to-end use case - adding initial topics, talking to the generated bot, then adding one more topic, retraining and talking to the bot again:
-
 [![Recorded_sample](http://img.youtube.com/vi/D9Y3L39LNjY/0.jpg)](https://www.youtube.com/watch?v=D9Y3L39LNjY "FAQ bot demo")
 
 ### Implementation
