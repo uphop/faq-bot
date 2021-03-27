@@ -40,7 +40,7 @@ There are three main interaction scenarios:
 
 2) Publishing collected FAQs by the originator:
 
-![Component model-Publishing](https://user-images.githubusercontent.com/74451637/112728320-4cd20800-8f2f-11eb-8d00-33e8102a3b4b.jpg)
+![Component model-Publishing (1)](https://user-images.githubusercontent.com/74451637/112728425-ea2d3c00-8f2f-11eb-8864-820311beb464.jpg)
 
 3) Broadcasting published FAQs to requesters (to users who are asking the originator those recurring questions)
 
