@@ -20,26 +20,33 @@ There are two bot types:
 Open a Slack direct message channel with the bot app: Apps > Add apps > (find your bot app and select that)
 
 Say "Hi" :) the bot should respond with the following:
+
 ![Screenshot 2021-03-27 at 12 52 56](https://user-images.githubusercontent.com/74451637/112718407-6c4f3d80-8efb-11eb-98ac-98f62599ceeb.png)
 
 Add new topic by click "Let's add new topic". Also, the bot gets free-style text - try telling that somethign like "hey, add a new topic". You will be promtted to add the initial expected question, and then the response you want to send back to your requesters:
+
 ![Screenshot 2021-03-27 at 12 56 39](https://user-images.githubusercontent.com/74451637/112718480-fb5c5580-8efb-11eb-826b-3df80e5b64d4.png)
 
 Add a couple more questions, and check the full list by saying something like "show my topics", or by pressing "Show my current topics" button. You will see the full list of your current topics; already published topics (visible to other users) are marked with a green checkmark, and still pending for publishing (not visible to other users) are marked with a red zero:
+
 ![Screenshot 2021-03-27 at 12 58 37](https://user-images.githubusercontent.com/74451637/112718542-6dcd3580-8efc-11eb-914e-7334d593f6aa.png)
 
 To publsih all topcis, and to make them actually visible to other users, say something like "hey, let's publish now", or press button "Publish all current topics", and confirm with "Yes". You will see a confirmation that the publishing has started:
+
 ![Screenshot 2021-03-27 at 13 02 39](https://user-images.githubusercontent.com/74451637/112718586-bbe23900-8efc-11eb-82fe-db95c3f86958.png)
 
 A new Broadcast bot, specifically serving your topics, will be generated and launched. You should get a notification back when it is ready:
+
 ![Screenshot 2021-03-27 at 13 04 45](https://user-images.githubusercontent.com/74451637/112718641-0794e280-8efd-11eb-8562-683355a0ea39.png)
 
-And now, elt's try to talk to that published bot (actually, any user in the same Slack space can do that now!). Use syntax `ask <@your user> <your question>` (for example, `ask @Olegas favourite cat?`). 
+And now, elt's try to talk to that published bot (actually, any user in the same Slack space can do that now!). Use syntax `ask <@your user> <your question>` (for example, `ask @Olegas favourite cat?`):
+
 ![Screenshot 2021-03-27 at 13 08 28](https://user-images.githubusercontent.com/74451637/112718724-8ab63880-8efd-11eb-8555-2ce604b8f137.png)
 
 Please note the question you are asking should not be the same as the original one - Concierge bot generates multiple training examples based on the original question using synonims. So, otehr users can ask a similar (but not exactly the same) question, and get back the response you want them to hear.
 
 And here is a short video demo of the end-to-end use case - adding initial topics, talking to the generated bot, then adding one more topic, retraining and talking to the bot again:
+
 [![Recorded_sample](http://img.youtube.com/vi/D9Y3L39LNjY/0.jpg)](https://www.youtube.com/watch?v=D9Y3L39LNjY "FAQ bot demo")
 
 ### Implementation
