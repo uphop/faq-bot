@@ -1,4 +1,4 @@
-authtoken: 6YSJ3HsPYPymoTU4RzDEG_3iwVWp7uQZfaAznXAJnhz
+authtoken: <your auth token>
 region: eu
 console_ui: true
 web_addr: localhost:4040
@@ -7,5 +7,5 @@ tunnels:
   rasa:
     proto: http
     addr: 5005
-    subdomain: 92a0949f-f993-400a-8ee2-ed5c5aa9d438
+    subdomain: <your unique subdomain>
     inspect: true
