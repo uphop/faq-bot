@@ -1,5 +1,6 @@
 from data.datastores.session_helper import SessionHelper
 from data.models.topic_model import Topic
+from data.models.snapshot_topic_model import SnapshotTopic
 import logging
 logger = logging.getLogger(__name__)
 
