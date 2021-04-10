@@ -139,11 +139,11 @@ nlu:
 
 - regex: mentioned_slack_user
   examples: |
-    - [a-zA-Z0-9]{9}
+    - (U|W)[a-zA-Z0-9]{8,10}
 
 - intent: probe_topic
   examples: |
     - ask [UE4T4HS8J](mentioned_slack_user)
-    - ask [UE4T4HS8J](mentioned_slack_user) a question
-    - check [UE4T4HS8J](mentioned_slack_user)
-    - ping [UE4T4HS8J](mentioned_slack_user)
+    - ask [W01ILOU5A48](mentioned_slack_user) a question
+    - check [UE6W4FS9J](mentioned_slack_user)
+    - ping [W02ULFU5B69](mentioned_slack_user)

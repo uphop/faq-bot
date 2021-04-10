@@ -15,7 +15,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 USER 1001
 
 COPY endpoints.yml endpoints.yml
-COPY credentials.yml credentials.yml
+# COPY credentials.yml credentials.yml
+COPY credentials_local.yml credentials.yml
 COPY ./models ./models
 
 EXPOSE 5005 5005

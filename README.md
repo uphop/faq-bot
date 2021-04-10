@@ -102,6 +102,7 @@ Please init those by running `./init_config.sh`, which will copy sample configur
 ### Configure Slack integration
 
 Also, you will need to create a new bot app in Slack for Capture Bot, and to configure Rasa<>Slack integration as per [this guide](https://rasa.com/docs/rasa/connectors/slack/).
+Please note one more additional scope is needed: `users:read`.
 
 You will need to update two config files:
 * In `faq-capture-bot/credentials.yml`, set values of `slack_token` to your Slack token, and `slack_signing_secret` to your Slack secret
